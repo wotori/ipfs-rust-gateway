@@ -1,16 +1,20 @@
+use std::fs::File;
 use std::io::Cursor;
-use rocket::tokio::time::{sleep, Duration};
 
 use rocket_okapi::{openapi};
 use ipfs_api_backend_hyper::{IpfsApi, IpfsClient};
+use rocket::{Data, Response};
 
 #[openapi(tag = "ipfs")]
-#[post("/")]
-pub async fn upload_file() -> String {
+#[post("/", data = "<paste>")]
+pub async fn upload_file(
+    paste: Data<'_>,
+) -> String {
     let client = IpfsClient::default();
     let file = Cursor::new("Hello, world!");
-    match client.add(file).await {
-        Ok(res) => res.hash,
-        Err(e) => String::from("error")
+    println!("saving file...");
+    match client.add(file).await { // TODO: find a way how to put file here
+        Ok(res) => res.hash.clone(),
+        Err(_e) => String::from("error")
     }
 }
