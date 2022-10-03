@@ -4,7 +4,7 @@ extern crate rocket;
 mod test_routes;
 
 use rocket_okapi::settings::UrlObject;
-use rocket_okapi::{ openapi_get_routes, rapidoc::*, swagger_ui::*};
+use rocket_okapi::{openapi_get_routes, rapidoc::*, swagger_ui::*};
 
 #[rocket::main]
 async fn main() {
@@ -12,9 +12,7 @@ async fn main() {
         .mount(
             "/",
             openapi_get_routes![
-                test_routes::index,
-                test_routes::delay,
-                test_routes::get_all_users
+                test_routes::upload_file,
             ],
         )
         .mount(
