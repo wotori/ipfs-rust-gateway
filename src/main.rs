@@ -12,11 +12,13 @@ async fn main() {
         .mount(
             "/",
             openapi_get_routes![
-                test_routes::upload_file,
+                test_routes::index,
+                test_routes::retrieve,
+                test_routes::upload
             ],
         )
         .mount(
-            "/",
+            "/doc",
             make_swagger_ui(&SwaggerUIConfig {
                 url: "../openapi.json".to_owned(),
                 ..Default::default()

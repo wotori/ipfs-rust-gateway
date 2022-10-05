@@ -748,6 +748,7 @@ name = "ipfs-api"
 version = "0.0.1"
 dependencies = [
  "ipfs-api-backend-hyper",
+ "rand",
  "rocket",
  "rocket_okapi",
  "serde",
