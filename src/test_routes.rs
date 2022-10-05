@@ -47,6 +47,6 @@ const ID_LENGTH: usize = 3;
 #[post("/", data = "<paste>")]
 pub async fn upload(paste: Data<'_>) -> std::io::Result<String> {
     let id = PasteId::new(ID_LENGTH);
-    paste.open(128.kibibytes()).into_file(id.file_path()).await?;
+    paste.open(3.mebibytes()).into_file(id.file_path()).await?;
     Ok(("HOST, retrieve(id)").to_string())
 }
