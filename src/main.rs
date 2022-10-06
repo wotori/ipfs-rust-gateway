@@ -14,7 +14,8 @@ async fn main() {
             openapi_get_routes![
                 test_routes::index,
                 test_routes::retrieve,
-                test_routes::upload
+                test_routes::upload,
+                test_routes::upload_ipfs,
             ],
         )
         .mount(

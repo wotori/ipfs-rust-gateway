@@ -7,6 +7,12 @@ mod paste_id;
 use paste_id::PasteId;
 use rocket::data::{Data, ToByteUnit};
 
+use ipfs_api_backend_hyper::{Error, IpfsApi, IpfsClient};
+use std::io::Cursor;
+use ipfs_api_backend_hyper::response::AddResponse;
+use rocket::http::{Header, ContentType};
+use rocket::serde::json::Json;
+use std::fs::File as StdFile;
 
 #[openapi(tag = "ipfs")]
 #[get("/")]
@@ -48,5 +54,22 @@ const ID_LENGTH: usize = 3;
 pub async fn upload(paste: Data<'_>) -> std::io::Result<String> {
     let id = PasteId::new(ID_LENGTH);
     paste.open(3.mebibytes()).into_file(id.file_path()).await?;
+    Ok(("HOST, retrieve(id)").to_string())
+}
+
+#[openapi(tag = "ipfs")]
+#[post("/ipfs", data = "<paste>")]
+pub async fn upload_ipfs(paste: Data<'_>) -> std::io::Result<String> {
+    let id = PasteId::new(ID_LENGTH);
+    let path = id.file_path();
+    paste.open(3.mebibytes()).into_file(path).await?;
+
+
+    let client = IpfsClient::default();
+    let file = StdFile::open("files/W8p").expect("could not read source file");
+    let hash = match client.add(file).await {
+        Ok(res) => println!("{}", res.hash),
+        Err(e) => println!("unexpected error")
+    };
     Ok(("HOST, retrieve(id)").to_string())
 }
