@@ -33,7 +33,6 @@ impl PasteId<'_> {
         for _ in 0..size {
             id.push(BASE62[rng.gen::<usize>() % 62] as char);
         }
-
         PasteId(Cow::Owned(id))
     }
 
@@ -41,5 +40,15 @@ impl PasteId<'_> {
     pub fn file_path(&self) -> PathBuf {
         let root = concat!(env!("CARGO_MANIFEST_DIR"), "/", "files");
         Path::new(root).join(self.0.as_ref())
+    }
+
+    // As string
+    /// Returns the path to the paste in `upload/` corresponding to this ID.
+    pub fn file_name(&self) -> String {
+        let a = "/files/".to_string();
+        let name = self.0.as_ref();
+        let name = format!("{}{}{}", env!("CARGO_MANIFEST_DIR"), a, name);
+        println!("finally got this {}!", name);
+        String::from(name)
     }
 }

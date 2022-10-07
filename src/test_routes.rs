@@ -64,12 +64,11 @@ pub async fn upload_ipfs(paste: Data<'_>) -> std::io::Result<String> {
     let path = id.file_path();
     paste.open(3.mebibytes()).into_file(path).await?;
 
-
     let client = IpfsClient::default();
-    let file = StdFile::open("files/W8p").expect("could not read source file");
+    let file = StdFile::open(id.file_name()).expect("could not read source file");
     let hash = match client.add(file).await {
-        Ok(res) => println!("{}", res.hash),
-        Err(e) => println!("unexpected error")
+        Ok(res) => res.hash,
+        Err(e) => String::from("unexpected error")
     };
-    Ok(("HOST, retrieve(id)").to_string())
+    Ok((hash).to_string())
 }
