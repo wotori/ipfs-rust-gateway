@@ -12,7 +12,6 @@ async fn main() {
         .mount(
             "/",
             openapi_get_routes![
-                routes::upload,
                 routes::upload_ipfs,
             ],
         )

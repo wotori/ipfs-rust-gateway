@@ -9,14 +9,6 @@ use std::fs::File as StdFile;
 const ID_LENGTH: usize = 5;
 
 #[openapi(tag = "ipfs")]
-#[post("/", data = "<paste>")]
-pub async fn upload(paste: Data<'_>) -> std::io::Result<String> {
-    let id = PasteId::new(ID_LENGTH);
-    paste.open(3.mebibytes()).into_file(id.file_path()).await?;
-    Ok(("HOST, retrieve(id)").to_string())
-}
-
-#[openapi(tag = "ipfs")]
 #[post("/ipfs", data = "<paste>")]
 pub async fn upload_ipfs(paste: Data<'_>) -> std::io::Result<String> {
     let id = PasteId::new(ID_LENGTH);
