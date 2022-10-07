@@ -9,3 +9,4 @@ rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "rapidoc"] }
 serde = "1.0"
 ipfs-api-backend-hyper = { version = "0.5", features = ["with-send-sync"] }
 rand = "0.8.5"
+dirs = "4.0.0"

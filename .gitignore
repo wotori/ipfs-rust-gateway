@@ -1,4 +1,4 @@
 /target
 .idea
-files/
+files/*
 .DS_Store

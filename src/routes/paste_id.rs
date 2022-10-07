@@ -1,8 +1,9 @@
+extern crate dirs;
+
 use std::borrow::Cow;
 use std::path::{Path, PathBuf};
-
+use std::string::ToString;
 use rand::{self, Rng};
-
 use rocket::request::FromParam;
 
 /// Returns an instance of `PasteId` if the path segment is a valid ID.
@@ -21,10 +22,6 @@ impl<'a> FromParam<'a> for PasteId<'a> {
 pub struct PasteId<'a>(Cow<'a, str>);
 
 impl PasteId<'_> {
-    /// Generate a _probably_ unique ID with `size` characters. For readability,
-    /// the characters used are from the sets [0-9], [A-Z], [a-z]. The
-    /// probability of a collision depends on the value of `size` and the number
-    /// of IDs generated thus far.
     pub fn new(size: usize) -> PasteId<'static> {
         const BASE62: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -36,19 +33,17 @@ impl PasteId<'_> {
         PasteId(Cow::Owned(id))
     }
 
-    /// Returns the path to the paste in `upload/` corresponding to this ID.
     pub fn file_path(&self) -> PathBuf {
         let root = concat!(env!("CARGO_MANIFEST_DIR"), "/", "files");
         Path::new(root).join(self.0.as_ref())
     }
 
     // As string
-    /// Returns the path to the paste in `upload/` corresponding to this ID.
     pub fn file_name(&self) -> String {
-        let a = "/files/".to_string();
-        let name = self.0.as_ref();
-        let name = format!("{}{}{}", env!("CARGO_MANIFEST_DIR"), a, name);
-        println!("finally got this {}!", name);
+        let path = "/files/".to_string();
+        let generated_name = self.0.as_ref();
+        let name = format!("{}{}{}", env!("CARGO_MANIFEST_DIR"), path, generated_name);
+        println!("finally got this path: {}", name);
         String::from(name)
     }
 }

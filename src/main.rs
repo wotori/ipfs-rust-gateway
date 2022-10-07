@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate rocket;
 
-mod test_routes;
+mod routes;
 
 use rocket_okapi::settings::UrlObject;
 use rocket_okapi::{openapi_get_routes, rapidoc::*, swagger_ui::*};
@@ -12,14 +12,12 @@ async fn main() {
         .mount(
             "/",
             openapi_get_routes![
-                test_routes::index,
-                test_routes::retrieve,
-                test_routes::upload,
-                test_routes::upload_ipfs,
+                routes::upload,
+                routes::upload_ipfs,
             ],
         )
         .mount(
-            "/doc",
+            "/",
             make_swagger_ui(&SwaggerUIConfig {
                 url: "../openapi.json".to_owned(),
                 ..Default::default()

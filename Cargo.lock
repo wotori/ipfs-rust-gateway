@@ -747,6 +747,7 @@ dependencies = [
 name = "ipfs-api"
 version = "0.0.1"
 dependencies = [
+ "dirs",
  "ipfs-api-backend-hyper",
  "rand",
  "rocket",
